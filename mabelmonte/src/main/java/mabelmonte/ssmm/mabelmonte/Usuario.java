@@ -1,4 +1,5 @@
 package mabelmonte.ssmm.mabelmonte;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -9,12 +10,14 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String nombre;
 
-    @Column(unique = true)
     private String email;
 
     private String password;
+
+    private int mapoints;  // Nuevo campo agregado
 
     // Getters y setters para cada atributo
     public Long getId() { return id; }
@@ -28,5 +31,8 @@ public class Usuario {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-}
 
+    public int getMapoints() { return mapoints; }
+    public void setMapoints(int mapoints) { this.mapoints = mapoints; }
+
+}
