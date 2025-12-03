@@ -17,7 +17,7 @@ public class Usuario {
 
     private String password;
 
-    private int mapoints;  // Nuevo campo agregado
+    private int mapoints;  
 
     // Getters y setters para cada atributo
     public Long getId() { return id; }

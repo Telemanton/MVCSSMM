@@ -1,5 +1,6 @@
 package mabelmonte.ssmm.mabelmonte;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,12 +9,46 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/reservas")
 public class PedidoController {
 
     @Autowired
     private PedidoRepository pedidoRepository;
+    
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+   
+
+    @PostMapping("/mapoints")
+    public ResponseEntity<?> pagarconmapoints(@RequestBody Map<String, Object> request) {
+        try {
+            String nombreUsuario = (String) request.get("email");
+
+            Usuario usuario = usuarioRepository.findByNombre(nombreUsuario);
+            Number puntosAPagar = (Integer) request.get("total_cents");
+            int puntosAPagarInt = puntosAPagar.intValue();
+            if (usuario.getMapoints() < puntosAPagarInt) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "Puntos insuficientes"));
+            }
+
+            usuario.setMapoints(usuario.getMapoints() - puntosAPagarInt);
+            usuarioRepository.save(usuario);
+
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "mensaje", "Pago con mapoints realizado correctamente",
+                "mapoints_restantes", usuario.getMapoints()
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "Error procesando el pago: " + e.getMessage()));
+        }
+    }
+    
 
     @PostMapping("/pedidos")
     public ResponseEntity<?> crearPedido(@RequestBody Map<String, Object> pedidoData) {
@@ -26,6 +61,14 @@ public class PedidoController {
 
             Pedido pedido = new Pedido(email, pedidoJson, totalCents, totalEuros, estado);
             Pedido savedPedido = pedidoRepository.save(pedido);
+
+            
+            Usuario usuario = usuarioRepository.findByNombre(email);
+            int puntosGanados = totalCents;
+            usuario.setMapoints(usuario.getMapoints() + puntosGanados);
+            usuarioRepository.save(usuario);
+        
+
 
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);

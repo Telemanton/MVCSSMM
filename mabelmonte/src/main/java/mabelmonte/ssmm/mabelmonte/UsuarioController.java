@@ -19,6 +19,19 @@ public class UsuarioController {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+     @GetMapping("/mapoints/{email}")
+public ResponseEntity<?> getMapointsByEmail(@PathVariable String email) {
+    try {
+        Usuario usuario = usuarioRepository.findByNombre(email);
+        if (usuario == null) {
+            return ResponseEntity.ok(Map.of("mapoints", 0));
+        }
+        return ResponseEntity.ok(Map.of("mapoints", usuario.getMapoints()));
+    } catch (Exception e) {
+        return ResponseEntity.ok(Map.of("mapoints", 0));
+    }
+}
+
     @PostMapping("/registro")
     public ResponseEntity<?> registrarUsuario(@RequestBody Usuario usuario) {
         if (usuarioRepository.findByNombre(usuario.getNombre()) != null) {
