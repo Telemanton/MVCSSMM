@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Consultas de Pedidos</title>
+    <style>
+        .header h1 {
+            text-align: center;
+        }
+    </style>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 20px; }
+        .header { background: #333; color: white; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
+        .search-panel { background: white; padding: 20px; border-radius: 5px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .btn { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .btn:hover { background: #0056b3; }
+        .table-responsive { background: white; border-radius: 5px; overflow-x: auto; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f8f9fa; padding: 12px; text-align: left; border-bottom: 2px solid #ddd; }
+        td { padding: 12px; border-bottom: 1px solid #ddd; }
+        tr:hover { background: #f9f9f9; }
+        .status { padding: 5px 10px; border-radius: 3px; font-size: 12px; }
+        .status.pending { background: #fff3cd; color: #856404; }
+        .status.completed { background: #d4edda; color: #155724; }
+        .status.cancelled { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Panel de Consultas de Pedidos</h1>
+        </div>
+        
+        <div class="search-panel">
+            <h2>Buscar Pedidos</h2>
+            <div class="form-group">
+                <label>Número de Pedido:</label>
+                <input type="text" id="orderNum" placeholder="Ej: PED-001">
+            </div>
+            <div class="form-group">
+                <label>Estado:</label>
+                <select id="status">
+                    <option value="">Todos</option>
+                    <option value="pending">Pendiente</option>
+                    <option value="completed">Completado</option>
+                    <option value="cancelled">Cancelado</option>
+                </select>
+            </div>
+            <button class="btn" onclick="searchOrders()">Buscar</button>
+        </div>
+
+        <div class="table-responsive">
+            <table id="ordersTable">
+                <thead>
+                    <tr>
+                        <th>Número de Pedido</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Monto</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td>PED-001</td>
+                        <td>Juan Pérez</td>
+                        <td>2024-01-15</td>
+                        <td>$150.00</td>
+                        <td><span class="status pending">Pendiente</span></td>
+                        <td><button class="btn" style="padding: 5px 10px; font-size: 12px;">Ver</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function searchOrders() {
+            const orderNum = document.getElementById('orderNum').value;
+            const status = document.getElementById('status').value;
+            console.log('Búsqueda:', orderNum, status);
+        }
+    </script>
+</body>
+</html>
