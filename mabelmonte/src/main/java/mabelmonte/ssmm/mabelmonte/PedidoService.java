@@ -15,5 +15,9 @@ public class PedidoService {
     public List<Pedido> findAll() {
         return pedidoRepository.findAll();
     }
+
+    public List<Pedido> buscar(String userName) {
+       return pedidoRepository.findByEmail(userName);
+    }
 }
 

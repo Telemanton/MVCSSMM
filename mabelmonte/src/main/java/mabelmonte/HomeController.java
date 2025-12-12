@@ -1,8 +1,14 @@
 package mabelmonte;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import ch.qos.logback.core.model.Model;
+import mabelmonte.ssmm.mabelmonte.Pedido;
+
 
 
 @Controller
@@ -11,9 +17,10 @@ public class HomeController {
     public String home() {
         return "index";
     }
-    @GetMapping("/consulta-pedido")
-    public String getMethodName(@RequestParam String param) {
-        return "resultado";
-    }
+
+    
+
+   
+   
     
 }

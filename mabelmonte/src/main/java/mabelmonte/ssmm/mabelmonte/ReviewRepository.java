@@ -10,4 +10,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     
     // Método para obtener todas las reseñas por valoración
     List<Review> findByRating(float rating);
+    
 }

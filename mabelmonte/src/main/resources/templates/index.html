@@ -3,81 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Consultas de Pedidos</title>
+    <title>Consultar Pedidos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        .header h1 {
-            text-align: center;
-        }
-    </style>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #f5f5f5; }
-        .container { max-width: 1200px; margin: 20px auto; padding: 20px; }
-        .header { background: #333; color: white; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
-        .search-panel { background: white; padding: 20px; border-radius: 5px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
-        .btn { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        .btn:hover { background: #0056b3; }
-        .table-responsive { background: white; border-radius: 5px; overflow-x: auto; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        table { width: 100%; border-collapse: collapse; }
-        th { background: #f8f9fa; padding: 12px; text-align: left; border-bottom: 2px solid #ddd; }
-        td { padding: 12px; border-bottom: 1px solid #ddd; }
-        tr:hover { background: #f9f9f9; }
-        .status { padding: 5px 10px; border-radius: 3px; font-size: 12px; }
-        .status.pending { background: #fff3cd; color: #856404; }
-        .status.completed { background: #d4edda; color: #155724; }
-        .status.cancelled { background: #f8d7da; color: #721c24; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #f0f2f5; color: #333; }
+        .container { max-width: 900px; margin: 40px auto; padding: 20px; }
+        .header { background: #1f2937; color: white; padding: 30px 20px; border-radius: 12px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .header h1 { font-weight: 700; font-size: 2rem; }
+        .search-panel { margin-top: 30px; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; }
+        input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; transition: border-color 0.2s; }
+        input:focus { border-color: #3b82f6; outline: none; }
+        .btn { background: #3b82f6; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: background 0.2s; }
+        .btn:hover { background: #2563eb; }
+        .footer { margin-top: 50px; text-align: center; color: #888; font-size: 0.9rem; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Panel de Consultas de Pedidos</h1>
-        </div>
-        
-        <div class="search-panel">
-            <h2>Buscar Pedidos</h2>
-            <div class="form-group">
-                <label>Número de Pedido:</label>
-                <input type="text" id="orderNum" placeholder="Ej: PED-001">
-            </div>
-            <div class="form-group">
-                <label>Estado:</label>
-                <select id="status">
-                    <option value="">Todos</option>
-                    <option value="pending">Pendiente</option>
-                    <option value="completed">Completado</option>
-                    <option value="cancelled">Cancelado</option>
-                </select>
-            </div>
-            <button class="btn" onclick="searchOrders()">Buscar</button>
-        </div>
 
-        <div class="table-responsive">
-            <table id="ordersTable">
-                <thead>
-                    <tr>
-                        <th>Número de Pedido</th>
-                        <th>Cliente</th>
-                        <th>Fecha</th>
-                        <th>Monto</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-    
-            </table>
-        </div>
+<div class="container">
+    <div class="header">
+        <h1>Consulta de Pedidos</h1>
+        <p style="margin-top:10px; font-weight:400; color:#d1d5db;">Busca los pedidos de cualquier usuario de forma rápida y sencilla</p>
     </div>
 
-    <script>
-        function searchOrders() {
-            const orderNum = document.getElementById('orderNum').value;
-            const status = document.getElementById('status').value;
-            console.log('Búsqueda:', orderNum, status);
-        }
-    </script>
+    <div class="search-panel">
+        <div class="form-group">
+            <label>Usuario (email):</label>
+            <input type="text" id="email" placeholder="Ej: admin_supersuper">
+        </div>
+        <button class="btn" onclick="searchOrders()">Buscar Pedidos</button>
+    </div>
+
+    <div class="footer">
+        &copy; 2025 Mabel Monte - Sistema de Pedidos
+    </div>
+</div>
+
+<script>
+function searchOrders() {
+    const email = document.getElementById('email').value.trim();
+    const params = new URLSearchParams();
+    if (email) params.append('email', email);
+
+    window.location.href = '/consulta-pedido?' + params.toString();
+}
+</script>
+
 </body>
 </html>
