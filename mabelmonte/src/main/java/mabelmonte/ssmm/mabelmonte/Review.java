@@ -11,6 +11,8 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String nombreUsuario;
+
     // Ya no hay relación con Usuario
 
     private float rating; // Valoración (e.g., 1.0 a 5.0)
@@ -26,13 +28,22 @@ public class Review {
     public Review() {
     }
 
-    public Review(float rating, String comment) {
+    public Review(String nombreUsuario, float rating, String comment) {
+        this.nombreUsuario = nombreUsuario;
         this.rating = rating;
         this.comment = comment;
         this.createdAt = LocalDateTime.now();
     }
     
     // --- Getters y Setters ---
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+    
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
 
     public Long getId() {
         return id;

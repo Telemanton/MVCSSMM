@@ -18,8 +18,9 @@ public class ReviewController {
 
     /**
      * POST /api/reviews
-     * Crea una nueva reseña (comentario y puntuación).
-     * El cuerpo de la petición debe contener: { "rating": 4.5, "comment": "..." }
+     * Crea una nueva reseña.
+     * El cuerpo de la petición debe contener: 
+     * { "nombreUsuario": "UsuarioX", "rating": 4.5, "comment": "..." }
      */
     @PostMapping
     public ResponseEntity<?> createReview(@RequestBody Map<String, Object> reviewData) {
@@ -28,8 +29,20 @@ public class ReviewController {
             float rating = Float.parseFloat(reviewData.get("rating").toString());
             String comment = (String) reviewData.get("comment");
             
-            // Creación y guardado de la entidad
-            Review newReview = new Review(rating, comment);
+
+            String nombreUsuario = (String) reviewData.get("nombreUsuario");
+
+            // Validar que el nombre de usuario no esté vacío
+            if (nombreUsuario == null || nombreUsuario.trim().isEmpty()) {
+                Map<String, Object> error = new HashMap<>();
+                error.put("success", false);
+                error.put("error", "El campo 'nombreUsuario' es obligatorio.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+            }
+            
+
+            Review newReview = new Review(nombreUsuario, rating, comment);
+            
             Review savedReview = reviewService.save(newReview);
             
             // Respuesta
@@ -40,6 +53,11 @@ public class ReviewController {
 
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
+        } catch (NumberFormatException e) {
+             Map<String, Object> error = new HashMap<>();
+             error.put("success", false);
+             error.put("error", "Formato de 'rating' incorrecto.");
+             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         } catch (Exception e) {
             Map<String, Object> error = new HashMap<>();
             error.put("success", false);
@@ -48,10 +66,7 @@ public class ReviewController {
         }
     }
 
-    /**
-     * GET /api/reviews
-     * Obtiene todas las reseñas.
-     */
+    // El método GET no necesita cambios.
     @GetMapping
     public ResponseEntity<List<Review>> getAllReviews() {
         try {
